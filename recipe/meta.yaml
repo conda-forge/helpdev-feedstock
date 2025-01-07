@@ -7,24 +7,23 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/helpdev-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/helpdev-{{ version }}.tar.gz
   sha256: bb62a79acbac141dadf42cadeb92bb7450dd18b9824a62043b6a0b149190db3d
 
 build:
   noarch: python
-  number: 0
+  number: 1
   entry_points:
     - helpdev=helpdev.__main__:main
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - pip
-    - python >=2.7
+    - python {{ python_min }}
+    - setuptools
   run:
-    # Only required for python<3.8 but always include for noarch: python
-    - importlib-metadata
-    - python >=2.7
+    - python >={{ python_min }}
 
 test:
   imports:
@@ -34,6 +33,7 @@ test:
     - helpdev --help
   requires:
     - pip
+    - python {{ python_min }}
 
 about:
   home: https://gitlab.com/dpizetta/helpdev
