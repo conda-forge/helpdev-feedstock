@@ -15,15 +15,14 @@ build:
   number: 1
   entry_points:
     - helpdev=helpdev.__main__:main
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - pip
     - python {{ python_min }}
+    - setuptools
   run:
-    # Only required for python<3.8 but always include for noarch: python
-    - importlib-metadata
     - python >={{ python_min }}
 
 test:
